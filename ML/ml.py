@@ -28,7 +28,6 @@ fichero1 = 'ML/casas_venta.csv'
 respuesta = [{
     "Cliente" : dict(), 
     "Modelo" : dict(), 
-    "Casas" : []
 }]
 
 precioSectores = []
@@ -43,15 +42,11 @@ def ML():
     verificarPrecioNoConstruido(data)
     #sacar acabados
     
-    print(precioSectores)
-
     acabados = sacarAbacadosCasas(data)
     data['acabados'] = acabados 
 
-   
-    print(data)
-
     verificarAcabados(data)
+
 
 
     # Definir las características (X) y la variable objetivo (y)
@@ -77,15 +72,6 @@ def ML():
     #======================================================
     #           RECOLECTAR INFORMACION RETORNO
     #======================================================
-    sector = imprimir_Sector(informacion['sector'])
-    resultado = data.loc[:, 'sector'] == sector
-    rd = data.loc[resultado]
-    #aqui lo que haremos es recorrer el dataframe para almacenarlo en o..
-    for key,value in rd['sector'].items():
-        registro = {"nombre" : str( rd["nombre"][key] ), "sector" : str( rd["sector"][key] ), "precio" : "${:,.0f}".format(rd["precio"][key]), "area" : str(rd["area"][key]), "habitaciones" : str(rd["habitaciones"][key]), "banos" : str(rd["banos"][key]), "parqueadero" : str(rd["parqueadero"][key]) }
-        respuesta[0]["Casas"].append(registro)
-        
-
     informacion_modelo = {
         "precioModelo" : "{:,.0f}".format(predicted_price[0]),
     }
@@ -94,6 +80,7 @@ def ML():
     respuesta[0]["Modelo"] = informacion_modelo
 
     return respuesta
+
 
 
 def limpiar(data):    
@@ -110,7 +97,7 @@ def limpiar(data):
         listado_ciudad.append(s2)
 
     data['sector'] = listado_sector
-    data['ciudad'] = listado_ciudad
+    #data['ciudad'] = listado_ciudad
 
     listado_precios = []
     listado_areas = []
@@ -243,6 +230,8 @@ def sacarAbacadosCasas(data):
     return lista_acabados
 
 
+
+
 def verificarAcabados(data):
     acabados = data['acabados'] 
     
@@ -260,6 +249,7 @@ def verificarAcabados(data):
             print("Diferente")
 
     data['tipoAcabados'] = tipoAcabados 
+
 
 
 def imprimir_Sector(codigo):
